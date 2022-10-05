@@ -29,7 +29,7 @@ public class JiraNag implements Runnable {
         Set<User> users = getUsersWithIssues(restClient);
         // Email each user with their list of issues
         for (User user : users) {
-            String jiraQueryPerUser = jira.query() + " AND assignee = '" + user.getName() + "'";
+            String jiraQueryPerUser = "assignee = '" + user.getName() + "' AND " + jira.query();
             Log.infof("Running: %s", jiraQueryPerUser);
 
             SearchResult searchResultsPerUser = restClient.getSearchClient().searchJql(jiraQueryPerUser).claim();
@@ -50,7 +50,12 @@ public class JiraNag implements Runnable {
 
     private void sendEmail(User user, Iterable<Issue> issues) {
         JiraNagConfig.Email email = config.email();
-        Templates.reviewIssues(user, issues)
+        MailTemplateInstance instance;
+        switch (email.template()) {
+            case REVIEW_ISSUES -> instance = Emails.reviewIssues(user, issues);
+            default -> throw new IllegalArgumentException("Unsupported template: " + email.template());
+        }
+        instance
                 .to(email.to().orElse(user.getEmailAddress()))
                 .replyTo(email.replyTo())
                 .subject(email.subject())
@@ -58,8 +63,8 @@ public class JiraNag implements Runnable {
                 .send().await().indefinitely();
     }
 
-    @CheckedTemplate
-    static class Templates {
+    @CheckedTemplate(basePath = "emails")
+    static class Emails {
         public static native MailTemplateInstance reviewIssues(User user, Iterable<Issue> issues);
     }
 }

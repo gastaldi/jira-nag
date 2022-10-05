@@ -1,0 +1,21 @@
+<p>Hi {user.displayName}!</p>
+{#insert beforeIssueTable /}
+<table border='1' style='border-collapse:collapse;'>
+    <tr>
+        <th>Issue</th>
+        <th>Summary</th>
+        <th>Fix Versions</th>
+        <th>Status</th>
+    </tr>
+    {#for issue in issues}
+    <tr>
+        <td><a href="https://issues.redhat.com/browse/{issue.key}">{issue.key}</a></td>
+        <td>{issue.summary}</td>
+        <td>{#for fixVersion in issue.fixVersions}{fixVersion.name}&nbsp;{#else}None{/for}</td>
+        <td>{issue.status.name}</td>
+    </tr>
+    {/for}
+</table>
+{#insert afterIssueTable /}
+<p>Thanks,</p>
+<p>George (via the <a href='https://github.com/gastaldi/jira-nag'>JIRA-Nag tool</a>)</p>
