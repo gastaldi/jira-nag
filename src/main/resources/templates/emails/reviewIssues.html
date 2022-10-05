@@ -10,4 +10,13 @@
         </ul>
         <p>Thanks for your help with this.</p>
     {/beforeIssueTable}
+    {#afterIssueTable}
+        <p>The states are documented here: <a href='https://docs.google.com/document/d/1s5pzo73HS9QYF1oQjv8ff-ATAK-u8dU_iL3qTe859xA/edit#heading=h.17kii7ptsosf'>Quarkus Product Process | JIRA Workflow</a>.</p>
+        <p>To summarise the states from an engineering perspective...
+        <br><b>To Do:</b> New issues yet to be worked on</br>
+        <br><b>Analysis In Progress:</b> The issue is being discussed/planned/analysed before actual development begins
+        <br><b>Dev In Progress:</b> Coding on the issue is in progress (Developer moves the issue here when coding has begun)
+        <br><b>Implemented:</b> The PR for the code is merged and out of the Developer's hands (Developer moves issue to here when the PR is merged)</br>
+        <br><b>Resolved:</b> The issue is available in a release (Productization moves issues from implemented to here during release)</br>
+    {/afterIssueTable}
 {/include}
