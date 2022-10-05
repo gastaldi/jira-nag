@@ -4,7 +4,6 @@ import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithDefault;
 
 import java.net.URI;
-import java.nio.file.Path;
 import java.util.Optional;
 
 @ConfigMapping(prefix = "app")

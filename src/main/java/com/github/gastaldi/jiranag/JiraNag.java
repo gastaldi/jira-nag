@@ -8,11 +8,9 @@ import com.atlassian.jira.rest.client.internal.async.AsynchronousJiraRestClientF
 import io.quarkus.logging.Log;
 import io.quarkus.mailer.MailTemplate.MailTemplateInstance;
 import io.quarkus.qute.CheckedTemplate;
-import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 import javax.inject.Inject;
-import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -52,7 +50,7 @@ public class JiraNag implements Runnable {
 
     private void sendEmail(User user, Iterable<Issue> issues) {
         JiraNagConfig.Email email = config.email();
-        Templates.reviewIssues(user,issues)
+        Templates.reviewIssues(user, issues)
                 .to(email.to().orElse(user.getEmailAddress()))
                 .replyTo(email.replyTo())
                 .subject(email.subject())
