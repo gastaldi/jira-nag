@@ -33,3 +33,12 @@ app.profiles.reviewIssues=project = Quarkus AND fixVersion = 2.13-Fireball.GA AN
 ```
 
 3. Run the application using the `app.profile` that is set to the name of the query (eg. `-Dapp.profile=reviewIssues`)
+
+## Running the application
+
+You can set the `app.profile` value before running the application to use a specific profile (must exist in `application.properties`).
+
+```shell script
+```bash
+APP_PROFILE=reviewIssues ./run.sh
+```

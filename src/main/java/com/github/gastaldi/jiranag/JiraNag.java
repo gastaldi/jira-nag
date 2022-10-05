@@ -34,7 +34,9 @@ public class JiraNag implements Runnable {
     public void run() {
         Jira jira = config.jira();
         String jiraQuery = config.currentJiraQuery();
-
+        if (jiraQuery == null) {
+            throw new IllegalStateException("Profile " + config.profile() + " not found");
+        }
         final JiraRestClient restClient = new AsynchronousJiraRestClientFactory().create(
                 jira.url(), new BearerHttpAuthenticationHandler(jira.token()));
         Set<User> users = getUsersWithIssues(restClient);
