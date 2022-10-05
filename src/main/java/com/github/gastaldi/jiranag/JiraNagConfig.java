@@ -28,6 +28,16 @@ public interface JiraNagConfig {
         Optional<String> to();
 
         String replyTo();
+
+        Template template();
+
+        /**
+         * Email templates
+         */
+        enum Template {
+            REVIEW_ISSUES
+        }
     }
+
 }
 
