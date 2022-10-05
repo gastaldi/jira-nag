@@ -13,7 +13,10 @@ import picocli.CommandLine.Command;
 
 import javax.inject.Inject;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Command(name = "jira-nag", mixinStandardHelpOptions = true)
 public class JiraNag implements Runnable {
@@ -41,14 +44,10 @@ public class JiraNag implements Runnable {
         JiraNagConfig.Jira jira = config.jira();
         Log.infof("Running: %s", jira.query());
         SearchResult searchResultsAll = restClient.getSearchClient().searchJql(jira.query()).claim();
-        Set<User> users = new HashSet<>();
-        for (Issue issue : searchResultsAll.getIssues()) {
-            if (issue.getAssignee() != null) {
-                User user = restClient.getUserClient().getUser(issue.getAssignee().getName()).claim();
-                users.add(user);
-            }
-        }
-        return users;
+        return StreamSupport.stream(searchResultsAll.getIssues().spliterator(), false)
+                .map(Issue::getAssignee)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
     }
 
     private void sendEmail(User user, Iterable<Issue> issues) {
