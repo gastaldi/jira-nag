@@ -20,10 +20,16 @@ You can run your application in dev mode that enables live coding using:
 ```
 
 
-## Creating a new e-mail
+## Creating a new profile
 
-To create a new e-mail:
+A profile is a JIRA Query mapped to an email template.
 
-1. Create the checked template in `src/main/resources/templates/emails`
-2. Add the template to the `com.github.gastaldi.jiranag.JiraNagConfig.Email.Template` enum
-3. Add the enum to the `switch` block in the `com.github.gastaldi.jiranag.JiraNag#sendEmail` method 
+To create a new profile:
+
+1. Create the Qute template in the `emails/` directory. (eg. `reviewIssues.html`)
+2. Include the JIRA query in the application.properties file.
+```properties
+app.profiles.reviewIssues=project = Quarkus AND fixVersion = 2.13-Fireball.GA AND status in ("To Do", "Analysis in Progress", "Ready For Dev") AND component in ("team/eng") AND assignee is not EMPTY ORDER BY key ASC
+```
+
+3. Run the application using the `app.profile` that is set to the name of the query (eg. `-Dapp.profile=reviewIssues`)
